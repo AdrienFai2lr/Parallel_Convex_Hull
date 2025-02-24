@@ -1,0 +1,7 @@
+{
+    "vscode-pets.petType": "crab",
+    "vscode-pets.petSize": "medium",
+    "vscode-pets.theme": "none",
+    "vscode-pets.throwBallWithMouse": true,
+    "sarif-viewer.connectToGithubCodeScanning": "off"
+}

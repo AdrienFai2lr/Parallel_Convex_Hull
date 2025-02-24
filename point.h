@@ -32,5 +32,10 @@ extern point *point_UH();
 extern int point_nb();
 extern point *point_part();
 extern point *point_merge_UH();
-extern void upper_hull();
+
+extern void upper_hull_bissection(point *pts);
+extern void upper_hull(point *pts);
+
+extern int* point_serialize(point *pts, int *size);
+extern point* point_deserialize(int *data, int size);
 

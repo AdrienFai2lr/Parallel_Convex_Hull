@@ -15,22 +15,11 @@
 #include "stdlib.h"
 #include "point.h"
 
-/*
- * calcul recursif d'enveloppe
- * convexe par bissection
- */
-void upper_hull(point *pts)
-{
-	point *upper, *pts2;
 
-	upper = point_UH(pts); /* retourne 0 si plus de 4 points */
-	if (!upper) {
-		pts2 = point_part(pts);
-		upper_hull(pts);
-		upper_hull(pts2);
-		point_merge_UH(pts, pts2);
-	}
-}
+
+void upper_hull_bissection(point *pts);
+
+
 
 /*
  * upper <nb points>

@@ -137,6 +137,38 @@ void point_print_gnuplot(point *pts, int solid)
 	}
 }
 
+/*
+ * calcul recursif d'enveloppe
+ * convexe par bissection
+ */
+
+
+ void upper_hull_bissection(point *pts)
+ {
+	 point *upper, *pts2;
+ 
+	 upper = point_UH(pts); /* retourne 0 si plus de 4 points */
+	 if (!upper) {
+		 pts2 = point_part(pts);
+		 upper_hull_bissection(pts);
+		 upper_hull_bissection(pts2);
+		 point_merge_UH(pts, pts2);
+	 }
+ }
+
+ void upper_hull(point *pts)
+ {
+	 point *upper, *pts2;
+ 
+	 upper = point_UH(pts); /* retourne 0 si plus de 4 points */
+	 if (!upper) {
+		 pts2 = point_part(pts);
+		 upper_hull(pts);
+		 upper_hull(pts2);
+		 point_merge_UH(pts, pts2);
+	 }
+ }
+
 
 /*
  * nombre de points dans une liste
@@ -158,7 +190,8 @@ int point_nb(point *pts)
 
 point *point_part(point *pts)
 {
-	int nb, next;
+	// int nb;
+	int next;
 	point *cur, *mid, *midpred;
 
 	midpred = NULL;
@@ -294,4 +327,29 @@ point *point_merge_UH(point *pts1, point *pts2)
 	return pts1;
 }
 
+/* Serialization/Deserialization */
+int* point_serialize(point *pts, int *size) {
+    int nb = point_nb(pts);
+    int *buffer = malloc(2 * nb * sizeof(int));
+    point *cur = pts;
+    *size = 0;
+    while (cur) {
+        buffer[(*size)++] = cur->x;
+        buffer[(*size)++] = cur->y;
+        cur = cur->next;
+    }
+    return buffer;
+}
 
+point* point_deserialize(int *data, int size) {
+    point *head = NULL, *prev = NULL;
+    for (int i = 0; i < size; i += 2) {
+        point *p = point_alloc();
+        p->x = data[i];
+        p->y = data[i+1];
+        if (!head) head = p;
+        if (prev) prev->next = p;
+        prev = p;
+    }
+    return head;
+}
